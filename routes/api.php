@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return $request->user();
 });
 
-Route::prefix('v1')->group(function () {
+Route::middleware(['throttle:rate_limiter', 'auth:sanctum'])->prefix('v1')->group(function () {
   Route::apiResource('categories', \App\Http\Controllers\Api\V1\CategoryController::class);
   Route::apiResource('posts', \App\Http\Controllers\Api\V1\PostController::class);
 });
