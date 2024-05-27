@@ -25,7 +25,7 @@ Route::middleware(['throttle:rate_limiter'])->prefix('v1')->group(function () {
 
 
 Route::middleware(['throttle:rate_limiter', 'auth:sanctum'])->prefix('v1')->group(function () {
-  Route::post('logout', [\App\Http\Controllers\Api\V1\AuthController::class, 'logout']);
+  Route::get('logout', [\App\Http\Controllers\Api\V1\AuthController::class, 'logout']);
   Route::apiResource('categories', \App\Http\Controllers\Api\V1\CategoryController::class);
   Route::apiResource('posts', \App\Http\Controllers\Api\V1\PostController::class);
 });

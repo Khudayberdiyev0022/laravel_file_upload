@@ -25,20 +25,26 @@ class AuthController extends Controller
   public function login(StoreLoginRequest $request): JsonResponse
   {
     if (!auth()->attempt($request->only('email', 'password'))) {
-      return response()->json(['message' => 'Unauthorized'], 401);
+      return response()->json(['message' => 'Wrong email or password incorrect. Try again...'], 401);
     } else {
       $user  = auth()->user();
-      $token = $user->createToken('token')->plainTextToken;
+      $token = $user->createToken( "{$user->name}")->plainTextToken;
 
-      return response()->json(['token' => $token]);
+      return response()->json([
+        'user' => [
+          'id'    => $user->id,
+          'name'  => $user->name,
+          'email' => $user->email,
+          'token' => $token,
+        ],
+      ]);
     }
   }
 
-  public function logout(Request $request): JsonResponse
+  public function logout(): JsonResponse
   {
-    $user = $request->user();
-    $user->currentAccessToken()->delete();
+    $user = auth()->user()->currentAccessToken()->delete();
 
-    return response()->json(['message' => 'Logged out successfully']);
+    return response()->json(['message' => 'Logged out successfully! Token removed...']);
   }
 }
