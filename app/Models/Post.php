@@ -4,16 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $fillable = ['category_id', 'title', 'content'];
+  protected $fillable = ['name', 'body'];
 
-  public function category(): BelongsTo
+  public function images(): \Illuminate\Database\Eloquent\Relations\MorphMany
   {
-    return $this->belongsTo(Category::class);
+    return $this->morphMany(Attachment::class, 'attachment');
   }
 }

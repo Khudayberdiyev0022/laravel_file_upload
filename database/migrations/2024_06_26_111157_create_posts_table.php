@@ -12,9 +12,8 @@ return new class extends Migration {
   {
     Schema::create('posts', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-      $table->string('title');
-      $table->text('content')->nullable();
+      $table->string('name');
+      $table->text('body');
       $table->timestamps();
     });
   }

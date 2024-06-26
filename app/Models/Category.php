@@ -10,4 +10,9 @@ class Category extends Model
   use HasFactory;
 
   protected $fillable = ['title'];
+
+  public function icon(): \Illuminate\Database\Eloquent\Relations\MorphOne
+  {
+    return $this->morphOne(Attachment::class, 'attachment');
+  }
 }
