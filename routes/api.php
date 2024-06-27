@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PostController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('categories', CategoryController::class);
-Route::apiResource('posts', PostController::class);
-Route::post('/posts-test', [PostController::class, 'storeTest']);
+Route::prefix('v1')->name('api.')->group(function () {
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('posts', PostController::class);
+});
