@@ -10,6 +10,7 @@
         <th>Name</th>
         <th>Body</th>
         <th>Images</th>
+        <th>Action</th>
       </tr>
       @foreach($posts as $post)
         <tr>
@@ -19,6 +20,14 @@
             @foreach($post->images as $image)
             <img src="{{ asset("storage/{$image->path}"  ?? '') }}" alt="" width="50" height="50">
             @endforeach
+          </td>
+          <td>
+            <a href="{{ route('posts.edit', $post) }}" class="btn btn-outline-warning">Edit</a>
+            <form action="{{ route('posts.destroy', $post) }}" method="POST">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
           </td>
         </tr>
       @endforeach

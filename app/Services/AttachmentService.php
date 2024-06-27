@@ -13,6 +13,59 @@ use Illuminate\Support\Facades\DB;
 final class AttachmentService
 {
 
+//  public function uploadFile(
+//    array $files,
+//    MorphOne|MorphMany|MorphToMany $relation = null,
+//    string $path = 'files',
+//    string $identifier = null
+//  ): array {
+//    $dataToInsert = [];
+//    foreach ($files as $file) {
+//      $type = $file->getClientOriginalExtension();
+//      $fileName = md5(time() . $file->getFilename()) . '.' . $type;
+//      $filePath = "uploads/$path/$fileName";
+//
+//      // Check if the file already exists in the database
+//      $existingAttachment = Attachment::where('path', $filePath)->first();
+//      if ($existingAttachment) {
+//        // Update the existing attachment instead of inserting a new one
+//        $existingAttachment->update([
+//          'title' => $file->getClientOriginalName(),
+//          'size' => $file->getSize(),
+//          'type' => $file->extension(),
+//          'extra_identifier' => $identifier,
+//          'updated_at' => now(),
+//        ]);
+//
+//        $dataToInsert[] = $existingAttachment->toArray();
+//      } else {
+//        // Insert a new attachment
+//        $file->storeAs($filePath, ['disk' => 'public']);
+//
+//        $data = [
+//          'title' => $file->getClientOriginalName(),
+//          'size' => $file->getSize(),
+//          'path' => $filePath,
+//          'type' => $file->extension(),
+//          'extra_identifier' => $identifier,
+//          'created_at' => now(),
+//          'updated_at' => now(),
+//        ];
+//
+//        if ($relation) {
+//          $data['attachment_type'] = $relation->getMorphClass();
+//          $data['attachment_id'] = $relation->getParent()->getKey();
+//        }
+//
+//        $dataToInsert[] = $data;
+//      }
+//    }
+//
+//    DB::table('attachments')->upsert($dataToInsert, ['path']);
+//
+//    return $dataToInsert;
+//  }
+
   public function uploadFile(
     array $files,
     MorphOne|MorphMany|MorphToMany $relation = null,
@@ -26,10 +79,10 @@ final class AttachmentService
       $file->storeAs("uploads/{$path}/{$fileName}", ['disk' => 'public']);
 
       $data = [
-        'title'            => $file->getClientOriginalName(),
+        'name'             => $file->getClientOriginalName(),
         'size'             => $file->getSize(),
-        'path'             => "uploads/$path/$fileName",
         'type'             => $file->extension(),
+        'path'             => "uploads/$path/$fileName",
         'extra_identifier' => $identifier,
         'created_at'       => now(),
         'updated_at'       => now(),
@@ -49,7 +102,7 @@ final class AttachmentService
   }
 
 
-  public function destroy(array|int|Attachment|Collection $files): void
+  public function destroy(array|null|int|Attachment|Collection $files): void
   {
     if (!$files instanceof Collection) {
       $files = Arr::wrap($files);

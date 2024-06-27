@@ -12,11 +12,11 @@ class Attachment extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['extra_identifier', 'title', 'path', 'type', 'size', 'attachment_id', 'attachment_type'];
+  protected $fillable = ['attachment_id', 'attachment_type', 'name', 'size', 'type', 'path', 'extra_identifier'];
 
   public function url(): Attribute
   {
-    return Attribute::make(fn(): string => URL::to('storage/' . $this->path));
+    return Attribute::make(fn(): string => URL::to('storage/'.$this->path));
   }
 
   public function attachment(): MorphTo
